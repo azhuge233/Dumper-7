@@ -23,8 +23,8 @@ jobs:
       uses: microsoft/setup-msbuild@v2
     
     - name: Publish
-	    shell: pwsh
+      shell: pwsh
       run: |
         Set-Location "$env:GITHUB_WORKSPACE"
         MSBuild Dumper-7.sln /p:configuration=Release /p:platform=x64
-		    ls
+        ls
