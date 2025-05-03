@@ -27,4 +27,12 @@ jobs:
       run: |
         Set-Location "$env:GITHUB_WORKSPACE"
         MSBuild Dumper-7.sln /p:configuration=Release /p:platform=x64 /v:q /nologo
-        ls .\x64
+        ls .\x64\Release
+
+    - name: Create Release
+      uses: "marvinpinto/action-automatic-releases@latest"
+      with:
+        repo_token: "${{ secrets.GITHUB_TOKEN }}"
+        automatic_release_tag: "latest"
+        prerelease: false
+        files: bin\Release\Dumper-7.dll
