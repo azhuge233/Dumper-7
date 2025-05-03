@@ -35,4 +35,4 @@ jobs:
         repo_token: "${{ secrets.GITHUB_TOKEN }}"
         automatic_release_tag: "latest"
         prerelease: false
-        files: bin\Release\Dumper-7.dll
+        files: x64\Release\Dumper-7.dll
