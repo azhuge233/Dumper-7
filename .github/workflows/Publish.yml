@@ -26,5 +26,5 @@ jobs:
       shell: pwsh
       run: |
         Set-Location "$env:GITHUB_WORKSPACE"
-        MSBuild Dumper-7.sln /p:configuration=Release /p:platform=x64
-        ls
+        MSBuild Dumper-7.sln /p:configuration=Release /p:platform=x64 /v:q /nologo
+        ls .\x64
