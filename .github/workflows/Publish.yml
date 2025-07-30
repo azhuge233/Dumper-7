@@ -27,8 +27,8 @@ jobs:
       run: |
         Set-Location "$env:GITHUB_WORKSPACE"
         MSBuild .\Dumper\Dumper.vcxproj /p:configuration=Release /p:platform=x64 /v:q /nologo
-        ls .\x64\Release
-        Compress-Archive -Path "$env:GITHUB_WORKSPACE\x64\Release\Dumper-7.dll" -DestinationPath "Dumper-7.zip"
+        ls .\Dumper\x64\Release
+        Compress-Archive -Path "$env:GITHUB_WORKSPACE\Dumper\x64\Release\Dumper-7.dll" -DestinationPath "Dumper-7.zip"
 
     - name: Create Release
       uses: "marvinpinto/action-automatic-releases@latest"
