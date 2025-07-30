@@ -1,0 +1,39 @@
+name: Publish
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+    paths-ignore:
+      - '**/**.md'
+      - '.github/**'
+
+jobs:
+  publish:
+    name: Publish the app
+    runs-on: windows-latest
+    permissions:
+      contents: write
+
+    steps:
+    - name: Checkout source code
+      uses: actions/checkout@v4
+    
+    - name: Add msbuild to PATH
+      uses: microsoft/setup-msbuild@v2
+    
+    - name: Publish
+      shell: pwsh
+      run: |
+        Set-Location "$env:GITHUB_WORKSPACE"
+        MSBuild .\Dumper\Dumper.vcxproj /p:configuration=Release /p:platform=x64 /v:q /nologo
+        ls .\x64\Release
+        Compress-Archive -Path "$env:GITHUB_WORKSPACE\x64\Release\Dumper-7.dll" -DestinationPath "Dumper-7.zip"
+
+    - name: Create Release
+      uses: "marvinpinto/action-automatic-releases@latest"
+      with:
+        repo_token: "${{ secrets.GITHUB_TOKEN }}"
+        automatic_release_tag: "latest"
+        prerelease: false
+        files: ./Dumper-7.zip
