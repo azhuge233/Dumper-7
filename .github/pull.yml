@@ -1,0 +1,8 @@
+version: "1"
+rules:
+  - base: main
+    upstream: Encryqed:main
+    mergeMethod: merge
+    mergeUnstable: false
+    conflictReviewers:
+      - azhuge233
