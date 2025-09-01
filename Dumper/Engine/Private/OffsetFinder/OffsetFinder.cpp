@@ -441,6 +441,29 @@ int32_t OffsetFinder::FindFFieldNextOffset()
 
 int32_t OffsetFinder::FindFFieldNameOffset()
 {
+	UEFField GuidChild = ObjectArray::FindStructFast("Guid").GetChildProperties();
+	UEFField VectorChild = ObjectArray::FindStructFast("Vector").GetChildProperties();
+
+	std::string GuidChildName = GuidChild.GetName();
+	std::string VectorChildName = VectorChild.GetName();
+
+	if ((GuidChildName == "A" || GuidChildName == "D") && (VectorChildName == "X" || VectorChildName == "Z"))
+		return Off::FField::Name;
+
+	for (Off::FField::Name = Off::FField::Owner; Off::FField::Name < 0x40; Off::FField::Name += 4)
+	{
+		GuidChildName = GuidChild.GetName();
+		VectorChildName = VectorChild.GetName();
+
+		if ((GuidChildName == "A" || GuidChildName == "D") && (VectorChildName == "X" || VectorChildName == "Z"))
+			return Off::FField::Name;
+	}
+
+	return OffsetNotFound;
+}
+
+int32_t OffsetFinder::NewFindFFieldNameOffset()
+{
 	auto IsPotentiallyValidOffset = [](int32 Offset) -> bool
 	{
 		// Make sure 0x4 aligned Offsets are neither the start, nor the middle of a pointer-member. Irrelevant for 32-bit, because the 2nd check will be 0x2 aligned then.
@@ -584,7 +607,7 @@ int32_t OffsetFinder::FindStructSizeOffset()
 
 int32_t OffsetFinder::FindMinAlignmentOffset()
 {
-	std::vector<std::pair<void*, int32_t>> Infos;
+	std::vector<std::pair<void*, int16_t>> Infos;
 
 	Infos.push_back({ ObjectArray::FindObjectFast("Transform").GetAddress(), 0x10 });
 

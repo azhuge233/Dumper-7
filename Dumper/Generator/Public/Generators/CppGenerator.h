@@ -94,23 +94,25 @@ private:
     static FunctionInfo GenerateFunctionInfo(const FunctionWrapper& Func);
 
     // return: In-header function declarations and inline functions
-    static std::string GenerateSingleFunction(const FunctionWrapper& Func, const std::string& StructName, StreamType& FunctionFile, StreamType& ParamFile);
-    static std::string GenerateFunctions(const StructWrapper& Struct, const MemberManager& Members, const std::string& StructName, StreamType& FunctionFile, StreamType& ParamFile);
+    static std::string GenerateSingleFunction(const FunctionWrapper& Func, const std::string& StructName, StreamType& FunctionFile, StreamType& ParamFile, StreamType& AssertionFile);
+    static std::string GenerateFunctions(const StructWrapper& Struct, const MemberManager& Members, const std::string& StructName, StreamType& FunctionFile, StreamType& ParamFile, StreamType& AssertionFile);
 
-    static void GenerateStruct(const StructWrapper& Struct, StreamType& StructFile, StreamType& FunctionFile, StreamType& ParamFile, int32 PackageIndex = -1, const std::string& StructNameOverride = std::string());
+    static void GenerateStruct(const StructWrapper& Struct, StreamType& StructFile, StreamType& FunctionFile, StreamType& ParamFile, StreamType& AssertionFile, int32 PackageIndex = -1, const std::string& StructNameOverride = std::string());
 
     static void GenerateEnum(const EnumWrapper& Enum, StreamType& StructFile);
 
 private: /* utility functions */
     static std::string GetMemberTypeString(const PropertyWrapper& MemberWrapper, int32 PackageIndex = -1, bool bAllowForConstPtrMembers = false /* const USomeClass* Member; */);
     static std::string GetMemberTypeString(UEProperty Member, int32 PackageIndex = -1, bool bAllowForConstPtrMembers = false);
-    static std::string GetMemberTypeStringWithoutConst(UEProperty Member, int32 PackageIndex = -1);
+    static std::string GetMemberTypeStringWithoutConst(UEProperty Member, int32 PackageIndex = -1, bool* bOutIsUnknownProperty = nullptr);
 
     static std::string GetFunctionSignature(UEFunction Func);
 
     static std::string GetStructPrefixedName(const StructWrapper& Struct);
     static std::string GetEnumPrefixedName(const EnumWrapper& Enum);
     static std::string GetEnumUnderlayingType(const EnumWrapper& Enm);
+
+    static std::string GetAssertionMacroString(const std::string& PrefixedStructUniqueName);
 
     static std::string GetCycleFixupType(const StructWrapper& Struct, bool bIsForInheritance);
 
@@ -128,7 +130,7 @@ private:
 
     static void GenerateSDKHeader(StreamType& SdkHpp);
 
-    static void GenerateBasicFiles(StreamType& BasicH, StreamType& BasicCpp);
+    static void GenerateBasicFiles(StreamType& BasicH, StreamType& BasicCpp, StreamType& AssertionsFile);
 
     /*
     * Creates the UnrealContainers.hpp file (without allocation code) for the SDK. 
