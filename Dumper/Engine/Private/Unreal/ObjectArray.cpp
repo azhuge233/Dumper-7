@@ -25,13 +25,21 @@ constexpr inline std::array FFixedUObjectArrayLayouts =
 
 constexpr inline std::array FChunkedFixedUObjectArrayLayouts =
 {
-	FChunkedFixedUObjectArrayLayout // Default UE4.21 and above
+	FChunkedFixedUObjectArrayLayout // Default UE4.21 - UE5.7
 	{
 		.ObjectsOffset = 0x00,
 		.MaxElementsOffset = 0x10,
 		.NumElementsOffset = 0x14,
 		.MaxChunksOffset = 0x18,
 		.NumChunksOffset = 0x1C,
+	},
+	FChunkedFixedUObjectArrayLayout // UE5.8 Developement Build
+	{
+		.ObjectsOffset = 0x00, 
+		.MaxElementsOffset = 0x0C,
+		.NumElementsOffset = 0x08,
+		.MaxChunksOffset = 0x14,
+		.NumChunksOffset = 0x10,
 	},
 	FChunkedFixedUObjectArrayLayout // Back4Blood
 	{
